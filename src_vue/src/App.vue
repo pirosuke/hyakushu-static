@@ -7,15 +7,23 @@
       <v-list dense>
         <v-list-item link @click="$router.push({path: `/Trial`})">
           <v-list-item-action>
-            <v-icon>mdi-wan</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>特訓開始</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link @click="$router.push({path: `/Log`})">
+          <v-list-item-action>
+            <v-icon>mdi-view-list</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>正解率を確認</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link @click="saveLog">
           <v-list-item-action>
-            <v-icon>mdi-wan</v-icon>
+            <v-icon>mdi-download</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>履歴を保存 <span v-if="$store.state.question_sets.isEditedAfterSave">(*未保存)</span></v-list-item-title>
@@ -23,7 +31,7 @@
         </v-list-item>
         <v-list-item>
           <v-list-item-action>
-            <v-icon>mdi-wan</v-icon>
+            <v-icon>mdi-upload</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
@@ -32,6 +40,17 @@
                 <input ref="file" class="file-button" type="file" @change="loadLog" />
               </label>
             </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-spacer></v-spacer>
+      <v-list dense>
+        <v-list-item link href="https://github.com/pirosuke/hyakushu-static" target="_blank">
+          <v-list-item-action>
+            <v-icon>mdi-github</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>ソースはこちら</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -69,6 +88,8 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { saveAs } from "file-saver"
+import moment from 'moment'
+moment.locale("ja")
 
 export default {
   name: 'App',
@@ -105,7 +126,9 @@ export default {
         type: "application/json"
       })
 
-      saveAs(blob, "answer_log.json")
+      const ts = moment(new Date()).format("YYYYMMDD_HHmmss")
+
+      saveAs(blob, "answer_log_" + ts + ".json")
       this.$store.commit("question_sets/updateEditedStatus", {
         isEdited: false
       })
