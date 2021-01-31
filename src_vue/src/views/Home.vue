@@ -9,7 +9,6 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" @click="$router.push({path: `/Trial`})">特訓を開始する</v-btn>
-          <v-btn color="blue darken-1" @click="addItem">成績を見る</v-btn>
         </v-card-actions>
     </v-card>
   </v-container>
@@ -34,8 +33,6 @@
         })
     },
     methods: {
-      addItem () {
-      },
     }
   }
 </script>
